@@ -4,6 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!-- Service层的设置 -->
-    <bean id="userService" class="service.impl.userServiceImpl"/>
+    <bean id="MovieService" class="service.impl.MovieServiceImpl"/>
 
 </beans>

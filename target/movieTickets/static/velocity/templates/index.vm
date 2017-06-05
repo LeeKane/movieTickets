@@ -1,3 +1,5 @@
+<link href="./static/css/movie.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+
 <nav class="white" role="navigation">
     <div class="nav-wrapper container">
         <a id="logo-container" href="#" class="brand-logo">Logo</a>
