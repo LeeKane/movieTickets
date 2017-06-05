@@ -1,8 +1,5 @@
 package bean;
 
-/**
- * Created by mac on 16/7/16.
- */
 public class user {
     private String userId;
     private String userName;
