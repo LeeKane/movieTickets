@@ -9,6 +9,7 @@ public class Movie {
     private String actors;
     private String imgUrl;
     private Double score;
+    private int id;
 
     public String getName() {
         return name;
@@ -49,4 +50,13 @@ public class Movie {
     public void setScore(Double score) {
         this.score = score;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 }
