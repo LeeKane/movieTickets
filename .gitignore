@@ -11,3 +11,5 @@ fabric.properties
 workspace.xml
 /target/
 /bin/
+
+.idea/workspace.xml
