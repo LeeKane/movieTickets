@@ -21,7 +21,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>movieTickets</servlet-name>
-        <url-pattern>/</url-pattern>
+        <alt-pattern>/</alt-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>/index.jsp</welcome-file>
