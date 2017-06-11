@@ -1,6 +1,6 @@
 package service.impl;
 
-import model.MTime.Movie_MTime;
+import bean.MTime.Movie_MTime;
 import mapper.MovieMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import service.MovieService_MTime;

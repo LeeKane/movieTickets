@@ -1,8 +1,9 @@
 package controller;
 
-import model.Maoyan.Comment_Maoyan;
-import model.Maoyan.Movie_Maoyan;
+import bean.Comment_Maoyan;
 import bean.Movie;
+import bean.Maoyan.Movie_Maoyan;
+import bean.user;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;

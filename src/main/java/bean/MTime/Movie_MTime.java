@@ -1,4 +1,4 @@
-package model.MTime;
+package bean.MTime;
 
 import java.util.Date;
 

@@ -10,8 +10,8 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import model.Maoyan.Comment_Maoyan;
-import model.Maoyan.Movie_Maoyan;
+import bean.Maoyan.Comment_Maoyan;
+import bean.Maoyan.Movie_Maoyan;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import service.MovieService_Maoyan;
