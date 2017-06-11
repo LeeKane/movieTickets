@@ -1,6 +1,6 @@
 package controller;
 
-import bean.Comment_Maoyan;
+import bean.Maoyan.Comment_Maoyan;
 import bean.Movie;
 import bean.Maoyan.Movie_Maoyan;
 import bean.user;
