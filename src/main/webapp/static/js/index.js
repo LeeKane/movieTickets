@@ -36,20 +36,19 @@ let MovieItem=React.createClass({
 
     render(){
         let {movie}=this.props;
-        let {actors,comment,imgUrl,name,score,id} = movie;
         return(
             <div className="movieItem">
                 <div className="movieImgContainer">
-                    <img className="movieImg" src={imgUrl}/>
+                    <img className="movieImg" src={movie.img}/>
                 </div>
                 <div className="movieInfo">
-                    <p className="movieName">{name}</p>
-                    <p className="movieComment">{comment}</p>
-                    <p className="movieActors">{actors}</p>
+                    <p className="movieName">{movie.nm} <span className="movieVer">{movie.ver}</span></p>
+                    <p className="movieComment">{movie.scm}</p>
+                    <p className="movieActors">{movie.star} <span className="movieRt">{movie.rt}</span></p>
                 </div>
                 <div className="movieButtonContainer">
-                    <div className="movieScore">{`${score} 分`}</div>
-                    <div className="movieButton"><a className="waves-effect waves-light btn" href={`./movieInfo?id=${id}`}>购票</a></div>
+                    <div className="movieScore"><span className="scText">{movie.sc}</span> 分</div>
+                    <div className="movieButton"><a className="waves-effect waves-light btn" href={`./movieInfo?id=${movie.id}`}>详情</a></div>
                 </div>
             </div>
         );
