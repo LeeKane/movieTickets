@@ -181,13 +181,12 @@ public class DouBanUtil {
         JSONObject object = new JSONObject(json);
         List<Movie> movies = DouBanUtil.JSONArray_movieId(object);
         for (Movie movie:movies){
-            url = "https://api.douban.com/v2/movie/subject/"+movie.getId();
+//            url = "https://api.douban.com/v2/movie/subject/"+movie.getId();
+            url = "https://api.douban.com/v2/movie/subject/1234";
             json = DouBanUtil.inputStreamToString(DouBanUtil.getInputStreamByPost(url));
             System.out.print(movies.indexOf(movie)+"  ");
             DouBanUtil.jsonParse(json);
         }
-
-
-
     }
+
 }

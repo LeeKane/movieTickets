@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-<<<<<<< HEAD
     <list default="true" id="e477f6fd-847f-4fa0-8531-c405da9bfc0e" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-=======
     <list default="true" id="d3c9cc9e-46c9-4049-980c-459b68f520e9" name="Default" comment="">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/bean/Comment_Maoyan.java" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/bean/Movie_Maoyan.java" />
