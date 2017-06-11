@@ -1,8 +1,9 @@
 package mapper;
 
-import bean.Comment_Maoyan;
+import bean.MTime.Movie_MTime;
+import bean.Maoyan.Comment_Maoyan;
 import bean.Movie;
-import bean.Movie_Maoyan;
+import bean.Maoyan.Movie_Maoyan;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.annotations.Select;
 
@@ -43,5 +44,25 @@ public interface MovieMapper {
     @Select("select * from comment_maoyan where movieid = #{id}")
     List<Comment_Maoyan> getCommentByMovieId_Maoyan(@Param("id")String movieId);
 
+
+
+    @Insert("insert into movie_mtime(movietitle,ratingfinal,usercount,totalboxoffice,totalboxofficeunit,todayboxoffice,todayboxofficeunit,showdays,enddate,isrelease,id,maoyanid) values (#{mt},#{rf},#{uc},#{tbo},#{tbou},#{tdbo},#{tdbou},#{sd},#{ed},#{ir},#{id},#{maoyanId})")
+    int addMovie_MTime(@Param("mt")String movieTitle,@Param("rf")double raitingFinal,
+                       @Param("uc")int usercount,@Param("tbo")double totalBoxOffice,
+                       @Param("tbou")String totalBoxOfficeUnit,@Param("tdbo")double todayBoxOffice,
+                       @Param("tdbou")String todayBoxOfficeUnit,@Param("sd")int showDays,
+                       @Param("ed")Date endDate,@Param("ir")boolean isRelease,@Param("id")String id,@Param("maoyanId")String maoyanId);
+    @Delete("delete from movie_mtime where id = #{id}")
+    int deleteMovie_MtimeById(@Param("id")String id);
+    @Delete("delete from movie_mtime where maoyanid = #{id}")
+    int deleteMovie_MtimeByMaoyanId(@Param("id")String id);
+    @Select("select * from movie_mtime where movietitle like concat(concat('%',#{name}),'%')")
+    List<Movie_MTime> getMovieByName_MTime(@Param("name")String name);
+    @Select("select * from movie_mtime")
+    List<Movie_MTime> getAllMovie_MTime();
+    @Select("select * from movie_mtime where id = #{id}")
+    Movie_MTime getMovieById_MTime(@Param("id")String id);
+    @Select("select * from movie_mtime where maoyanid = #{id}")
+    Movie_MTime getMovieByMaoyanId_MTime(@Param("id")String id);
 
 }

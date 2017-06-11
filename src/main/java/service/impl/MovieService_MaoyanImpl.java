@@ -1,7 +1,7 @@
 package service.impl;
 
-import bean.Comment_Maoyan;
-import bean.Movie_Maoyan;
+import bean.Maoyan.Comment_Maoyan;
+import bean.Maoyan.Movie_Maoyan;
 import mapper.MovieMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import service.MovieService_Maoyan;
