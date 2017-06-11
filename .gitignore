@@ -13,3 +13,4 @@ fabric.properties
 /bin/
 /test/
 .idea/workspace.xml
+.settings/
