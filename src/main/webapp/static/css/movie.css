@@ -83,6 +83,19 @@
     background: #009688;
     color: #fff;
 }
-
-
+.movieVer{
+    border: 1px solid #009688;
+    border-radius: 10px;
+    font-size: 10px;
+    color: #a9a9a9;
+    padding: 3px;
+}
+.movieRt{
+    margin-left: 20px;
+}
+.scText
+{
+    color:#009688;
+    margin-right: 4px;
+}
 

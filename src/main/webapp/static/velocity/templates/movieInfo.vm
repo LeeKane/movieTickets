@@ -3,26 +3,61 @@
 <div class="movieInfoContainer">
     <div class="movieInfoInner">
         <div class="bg-blur">
-            <img src=$!result.movie.imgUrl />
+            <img src=$!result.movie.img />
         </div>
         <div class="mask"></div>
         <div class="outImg">
-            <img src=$!result.movie.imgUrl />
+            <img src=$!result.movie.img />
         </div>
         <div class="movieSummary">
-            <div class="movieName">$!result.movie.name</div>
+            <div class="movieName">$!result.movie.nm</div>
             <div class="movieScore">
-                <b>$!result.movie.score</b>
-                <small>分</small>
+                <b>$!result.movie.sc</b>
+                <small>($!result.movie.snum 人评) 来自 <img class="srcLogo" src="./static/images/maoyan.png"/></small>
             </div>
-            <div class="movieTag">喜剧 动作</div>
-            <div class="movieDate">2017-05-05上映 | 140分钟</div>
+            <div class="movieTag">$!result.movie.cat</div>
+            <div class="movieDate">$!result.movie.rt | $!result.movie.dur 分钟</div>
         </div>
     </div>
     <div class="movieContent">
         <p>
-            布兰德船长（哈维尔·巴登 饰）为死去的兄弟向杰克船长展开复仇计划。布兰德船长想赶在杰克船长（约翰尼·德普 饰）他们之前找到传说中的海神波塞顿的三叉戟，因为他相信自己的兄弟艾里克是被杰克变成海盗进而丧命的，他想用三叉戟向杰克复仇。杰克船长求生的唯一希望在于寻找传说中海神波塞冬的三叉戟——能够赋予其拥有完全控制海洋权的强大神器。
+            $!result.movie.dir 执导, $!result.movie.star 出演,$!result.movie.scm.
+        </p>
+        <p>
+            $!result.movie.showInfo 来自<img class="srcLogo" src="./static/images/maoyan.png"/>
         </p>
     </div>
+    <section class="hot-comment">
+        <div class="comment-header">
+            <p>
+                观影评论
+            </p>
+        </div>
+        <div id="comment-content" >
+                #foreach($comment in $result.comments)
+                    <div class="comment-item">
+                        <div class="user-avatar">
+                            <img class="avatar-img" src=$!comment.avatarurl>
+                        </div>
+                        <div class="comment-info">
+                            <div class="comment-approve">
+                                $!comment.nickName
+                                <span class="approve">$!comment.approve</span>
+                            </div>
+                            <p>
+                                $!comment.content
+                            </p>
+                            <div class="comment-time">
+                                $!comment.time
+                                <span class="reply">$!comment.reply</span>
+                            </div>
+                        </div>
+                    </div>
+
+                #end
+        </div>
+
+    </section>
 </div>
 
+<script src="./static/js/comment.js" type="text/babel"></script>
