@@ -1,4 +1,4 @@
-package bean.Maoyan;
+package model.Maoyan;
 
 /**
  * Created by 50210 on 2017/6/10.

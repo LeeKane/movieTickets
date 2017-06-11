@@ -1,4 +1,4 @@
-package bean.Maoyan;
+package model.Maoyan;
 
 import java.util.Date;
 

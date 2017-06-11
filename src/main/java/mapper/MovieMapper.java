@@ -1,9 +1,9 @@
 package mapper;
 
-import bean.MTime.Movie_MTime;
-import bean.Maoyan.Comment_Maoyan;
+import model.MTime.Movie_MTime;
+import model.Maoyan.Comment_Maoyan;
 import bean.Movie;
-import bean.Maoyan.Movie_Maoyan;
+import model.Maoyan.Movie_Maoyan;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.annotations.Select;
 

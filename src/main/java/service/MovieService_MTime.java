@@ -1,6 +1,6 @@
 package service;
 
-import bean.MTime.Movie_MTime;
+import model.MTime.Movie_MTime;
 
 import java.util.List;
 
