@@ -159,10 +159,18 @@
 }
 .approve{
     float: right;
+    color: #009688;
 }
 .reply
 {
     float: right;
+    font-size: 11px;
+    color: #999;
+}
+.comment-time
+{
+    font-size: 11px;
+    color: #999;
 }
 .avatar-img{
     height: 40px;
@@ -171,4 +179,24 @@
 .comment-item .comment-info{
     flex: 18;
     padding: 15px 0px;
+}
+.comment-item .comment-info p{
+    word-break: break-all;
+    color: #333;
+}
+.comment-username{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 400;
+    font-size: 13px;
+    color: #333;
+}
+.comment-tag{
+    border: 1px solid #009688;
+    margin-left: 3px;
+    border-radius: 10px;
+    font-size: 10px;
+    color: #a9a9a9;
+    padding: 3px;
 }

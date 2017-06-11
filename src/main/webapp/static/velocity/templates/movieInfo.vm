@@ -41,15 +41,18 @@
                         </div>
                         <div class="comment-info">
                             <div class="comment-approve">
-                                $!comment.nickName
-                                <span class="approve">$!comment.approve</span>
+                                <b class="comment-username">$!comment.nickName</b>
+                                #if($comment.score > 3.5)
+                                    <span class="comment-tag">值得一看</span>
+                                #end
+                                <span class="approve">$!comment.approve 赞</span>
                             </div>
                             <p>
                                 $!comment.content
                             </p>
                             <div class="comment-time">
                                 $!comment.time
-                                <span class="reply">$!comment.reply</span>
+                                <span class="reply">$!comment.reply 回应</span>
                             </div>
                         </div>
                     </div>
