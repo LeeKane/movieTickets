@@ -5,5 +5,6 @@
 
     <!-- Service层的设置 -->
     <bean id="MovieService" class="service.impl.MovieServiceImpl"/>
+    <bean id="MovieService_Maoyan" class="service.impl.MovieService_MaoyanImpl"/>
 
 </beans>
