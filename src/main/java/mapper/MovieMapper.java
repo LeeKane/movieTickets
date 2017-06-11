@@ -4,6 +4,9 @@ import bean.MTime.Movie_MTime;
 import bean.Maoyan.Comment_Maoyan;
 import bean.Movie;
 import bean.Maoyan.Movie_Maoyan;
+import model.Douban.Cast_Douban;
+import model.Douban.Movie_Douban;
+import model.Douban.Rating_Douban;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.annotations.Select;
 
@@ -46,7 +49,8 @@ public interface MovieMapper {
 
 
 
-    @Insert("insert into movie_mtime(movietitle,ratingfinal,usercount,totalboxoffice,totalboxofficeunit,todayboxoffice,todayboxofficeunit,showdays,enddate,isrelease,id,maoyanid) values (#{mt},#{rf},#{uc},#{tbo},#{tbou},#{tdbo},#{tdbou},#{sd},#{ed},#{ir},#{id},#{maoyanId})")
+    @Insert("insert into movie_mtime(movietitle,ratingfinal,usercount,totalboxoffice,totalboxofficeunit,todayboxoffice,todayboxofficeunit,showdays,enddate,isrelease,id,maoyanid) values" +
+            " (#{mt},#{rf},#{uc},#{tbo},#{tbou},#{tdbo},#{tdbou},#{sd},#{ed},#{ir},#{id},#{maoyanId})")
     int addMovie_MTime(@Param("mt")String movieTitle,@Param("rf")double raitingFinal,
                        @Param("uc")int usercount,@Param("tbo")double totalBoxOffice,
                        @Param("tbou")String totalBoxOfficeUnit,@Param("tdbo")double todayBoxOffice,
@@ -65,4 +69,34 @@ public interface MovieMapper {
     @Select("select * from movie_mtime where maoyanid = #{id}")
     Movie_MTime getMovieByMaoyanId_MTime(@Param("id")String id);
 
+    @Select("select * from movie_douban where id = #{id}")
+    Movie_Douban getMovieById_Douban(@Param("id") String id);
+    @Select("select * from movie_douban where title like concat(concat('%',#{name}),'%') or original_title like concat(concat('%',#{name}),'%')")
+    List<Movie_Douban> getMovieByName_Douban(@Param("name")String name);
+    @Select("select * from movie_douban")
+    List<Movie_Douban> getAllMovie_Douban();
+    @Insert("insert into movie_douban(reviews_count,wish_count,countries,genres,collect_count,summary,comments_count,ratings_count,aka,title,casts,original_title,subtype,directors,year,images_large,images_middle,images_small,alt,id)" +
+            " values (#{rec},#{wc},#{coun},#{gen},#{collc},#{su},#{commc},#{rac},#{aka},#{t},#{ca},#{ot},#{st},#{di},#{year},#{il},#{im},#{is},#{alt},#{id})")
+    int addMovie_Douban(@Param("rec")int rec,@Param("wc")int wc,@Param("coun")String coun,
+                        @Param("gen")String gen,@Param("collc")int collc,@Param("su")String su,
+                        @Param("commc")int commc,@Param("rac")int rac,@Param("aka")String aka,
+                        @Param("t")String t,@Param("ca")String ca,@Param("ot")String ot,@Param("st")String st,
+                        @Param("di")String di,@Param("year")String year,@Param("il")String il,@Param("im")String im,
+                        @Param("is")String is,@Param("alt")String alt,@Param("id")String id);
+    @Delete("delete from movie_douban where id = #{id}")
+    int deleteMovie_Douban(@Param("id")String id);
+
+    @Select("select * from rating_douban where movieId = #{id}")
+    Rating_Douban getRatingByMovieId_Douban(@Param("id")String id);
+    @Insert("insert into rating_douban(max,min,average,star,movieid) values (#{max},#{min},#{average},#{star},#{movieid})")
+    int addRating(@Param("max")int max,@Param("min")int min,@Param("average")double average,@Param("star")int star,@Param("movieid")String movieid);
+    @Delete("delete from rating_douban where movieid = #{id}")
+    int deleteRating(@Param("id")String id);
+
+    @Select("select * from cast_douban where id = #{id}")
+    Cast_Douban getCastById_Douban(@Param("id")String id);
+    @Insert("insert into cast_douban(alt,avatars_large,avatars_middle,avatars_small,name,id) values (#{alt},#{al},#{am},#{as},#{name},#{id})")
+    int addCast_Douban(@Param("alt")String alt,@Param("al")String al,@Param("am")String am,@Param("as")String as,@Param("name")String name,@Param("id")String id);
+    @Delete("delete from cast_douban where id = #{id}")
+    int deleteCast_Douban(@Param("id") String id);
 }

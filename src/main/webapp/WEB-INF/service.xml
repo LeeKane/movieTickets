@@ -7,4 +7,5 @@
     <bean id="MovieService" class="service.impl.MovieServiceImpl"/>
     <bean id="MovieService_Maoyan" class="service.impl.MovieService_MaoyanImpl"/>
     <bean id="MovieService_MTime" class="service.impl.MovieService_MTimeImpl"/>
+    <bean id="MovieService_Douban" class="service.impl.MovieService_DoubanImpl"/>
 </beans>
