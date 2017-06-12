@@ -126,8 +126,29 @@
 }
 .searchContainer{
     box-shadow: 0 0 1px #cbcbcb;
+    position: relative;
+    top: 15px;
     background-color: #fff;
-    height: 28px;
+    height: 60%;
     margin-right: 13px;
-    border-radius: 15px;
+    border-radius: 20px;
+    display: flex;
+}
+.searchIcon{
+    position: absolute;
+    top: -11px;
+    left: 5px;
+    color: #009688;
+}
+.iconContainer{
+    width: 45px;
+}
+.inputContainer{
+    flex: 1;
+    padding-right: 17px;
+    position: relative;
+    top: -11px;
+}
+.searchInput{
+    height: 2rem;
 }

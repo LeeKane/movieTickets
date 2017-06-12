@@ -12,6 +12,7 @@ window.fetch('./getAllMovies')
         );
     });
 
+
 let MovieItem=React.createClass({
     componentDidMount: function() {
         // get a movie by name**
@@ -56,17 +57,33 @@ let MovieItem=React.createClass({
 });
 
 let MovieTable=React.createClass({
+    getInitialState: function() {
+        return {
+            filterText: '',
+        };
+    },
+    handleFilterChange:function(text){
+        this.setState({
+            filterText:text
+        });
+    },
     componentDidMount: function() {
 
     },
     render(){
         let rows=[];
         let {movies}=this.props;
+        let {filterText}=this.state;
         movies.forEach(function(movie){
-            rows.push(<MovieItem key={movie.id} movie={movie}/>);
+            if(movie.nm.indexOf(filterText) === -1)
+            {}
+            else {
+                rows.push(<MovieItem key={movie.id} movie={movie}/>);
+            }
         });
         return(
             <div>
+                <SearchNav filterText={filterText} handleFilterChange={this.handleFilterChange}/>
                 {rows}
             </div>
         );
@@ -74,4 +91,30 @@ let MovieTable=React.createClass({
 });
 
 
+let SearchNav=React.createClass({
+    handleChange:function(){
+      let {handleFilterChange}  = this.props;
+        handleFilterChange(this.refs.filterTextInput.value);
+    },
+    render(){
+        let {filterText} =this.props;
+        return(
+            <nav className="white" role="navigation">
+                <div className="nav-wrapper container">
+                    <div className="searchContainer">
+                        <div className="iconContainer">
+                            <i className="material-icons searchIcon">search</i>
+                        </div>
+                        <div className="inputContainer">
+                            <input placeholder="搜电影" id="first_name" type="text" className="searchInput" style={{height: '2rem',color: '#666'}}
+                                   value={filterText}
+                                   ref="filterTextInput"
+                                   onChange={this.handleChange}/>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        );
+    }
+});
 

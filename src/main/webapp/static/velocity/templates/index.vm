@@ -1,13 +1,6 @@
 <link href="./static/css/movie.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 
-<nav class="white" role="navigation">
-    <div class="nav-wrapper container">
-        <div class="searchContainer">
-        <i class="search">add</i>
-       <span><input class="search" type="search" maxlength="32" placeholder="找电影" autocomplete="off"/></span>
-        </div>
-    </div>
-</nav>
+
 
 <div id="container"></div>
 
