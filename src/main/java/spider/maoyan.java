@@ -23,7 +23,6 @@ public class maoyan {
 	public final int climit=5;
 	public final int cloop=10;//评论获取循环次数
 	MovieService_Maoyan ms=new MovieService_MaoyanImpl();
-//	CommentService_Maoyan cs=new CommentService_MaoyanImpl();
 	public String loadJson(String url) {
 //		try {
 //			Thread.sleep(1000);
@@ -339,7 +338,7 @@ public class maoyan {
 		cmy.setReply(reply);
 		cmy.setOppose(oppose);
 		cmy.setMovieId(movieId);
-//		cs.addComment(cmy);
+		ms.addComment(cmy);
 		
 		
 		

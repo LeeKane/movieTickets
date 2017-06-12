@@ -10,15 +10,18 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.htmlparser.Node;
-import org.htmlparser.NodeFilter;
-import org.htmlparser.Parser;
-import org.htmlparser.filters.HasAttributeFilter;
-import org.htmlparser.util.NodeList;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+import bean.MTime.Movie_MTime;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import service.MovieService_MTime;
+import service.impl.MovieService_MTimeImpl;
 
 public class MTime {
+	MovieService_MTime msm=new MovieService_MTimeImpl();
 	public String  urlBuilder(String movieName){
 		String url="http://service.channel.mtime.com/Search.api?Ajax_CallBack=true&Ajax_CallBackType=Mtime.Channel.Services&Ajax_CallBackMethod=GetSearchResult&Ajax_CrossDomain=1&Ajax_RequestUrl=http//search.mtime.com/search/?q="+movieName+"&t=20176103203852154&Ajax_CallBackArgument0="+movieName+"&Ajax_CallBackArgument1=0&Ajax_CallBackArgument2=628&Ajax_CallBackArgument3=0&Ajax_CallBackArgument4=1";
 //		System.out.println(url);
@@ -73,8 +76,7 @@ public class MTime {
 		return json.toString();
 	}
 	
-	public void mainMoivePrase(String id){
-		String url="http://movie.mtime.com/"+id+"/";
+	public void mainMoivePrase(String id,String MaoyanId){
 		String url2="http://service.library.mtime.com/Movie.api?Ajax_CallBack=true&Ajax_CallBackType=Mtime.Library.Services&Ajax_CallBackMethod=GetMovieOverviewRating&Ajax_CrossDomain=1&Ajax_RequestUrl=http://Fmovie.mtime.com/"+id+"/&t=20176101237368064&Ajax_CallBackArgument0="+id;
 //		System.out.println(url2);
 		String response=loadJson(url2);
@@ -90,8 +92,9 @@ public class MTime {
 			result.append(cr[j]);
 		}
 		String json=result.toString();
-		System.out.println(json);
+//		System.out.println(json);
 		JSONObject jo=JSONObject.fromObject(json);
+		boolean isRelease=jo.getJSONObject("value").getBoolean("isRelease");
 		JSONObject rate=jo.getJSONObject("value").getJSONObject("movieRating");
 		String MovieId="";
 		if(rate.has("MovieId")){
@@ -122,7 +125,7 @@ public class MTime {
 		else{
 			movieTitle="error";
 		}
-		JSONObject boxOffice=jo.getJSONObject("boxOffice");
+		JSONObject boxOffice=jo.getJSONObject("value").getJSONObject("boxOffice");
 		double TotalBoxOffice=0.0;
 		if(boxOffice.has("TotalBoxOffice")){
 			TotalBoxOffice=boxOffice.getDouble("TotalBoxOffice");
@@ -167,39 +170,78 @@ public class MTime {
 		else{
 			EndDate=null;
 		}
-		//
-		
-		
-		
-//		Parser parser;
-//		try {
-//			parser = new Parser(new URL(url).openConnection() );
-//			NodeFilter filter = new HasAttributeFilter("class","gradebox __r_c_");
-//			NodeList nodes = parser.extractAllNodesThatMatch(filter);
-//			if(nodes!=null) {
-//				System.out.println(nodes.size());
-//	            for (int k = 0; k < nodes.size(); k++) {
-//	                Node textnode = (Node) nodes.elementAt(k);
-//	                
-//	                System.out.println("getText:"+textnode.getText());
-//	            }
-//	        }
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
-		
-		
-		
+		Movie_MTime m=new Movie_MTime();
+		m.setMovieTitle(movieTitle);
+		m.setRatingFinal(RatingFinal);
+		m.setUsercount(Usercount);
+		m.setTodayBoxOffice(TodayBoxOffice);
+		m.setTodayBoxOfficeUnit(TodayBoxOfficeUnit);
+		m.setTotalBoxOffice(TotalBoxOffice);
+		m.setTotalBoxOfficeUnit(TotalBoxOfficeUnit);
+		m.setShowDays(ShowDays);
+		m.setEndDate(EndDate);
+		m.setRelease(isRelease);
+		m.setId(id);
+		m.setMaoyanId(MaoyanId);
+		msm.addMovie(m);
+		String url="http://movie.mtime.com/"+id+"/reviews/short/hot.html";
+		commentPrase(url);
     }
-	public static void main(String[] args){
-		MTime m=new MTime();
-		m.mainMoivePrase(m.urlBuilder("新木乃伊"));
-//		String str=";var getSearchResult=result_20176103203852154;";
-//		System.out.println(str.length());
-//		MTime m=new MTime();
-//		m.urlBuilder("新木乃伊");
+	
+	
+	public void commentPrase(String url){
+		try {
+			Document doc = Jsoup.connect(url).get();
+			Element e=doc.select("#tweetRegion > dd.first > div > div.comboxuser > div.pic_58 > a > img").first();
+			String avatarurl=e.attr("src");
+			String nickName=e.attr("alt");
+			e=doc.select("#tweetRegion > dd.first > div > h3").first();
+			String content=e.text();
+			e=doc.select("#tweetRegion > dd.first > div").first();
+			String id=e.attr("tweetid");
+			String url2="http://service.library.mtime.com/Movie.api?Ajax_CallBack=true&Ajax_CallBackType=Mtime.Library.Services&Ajax_CallBackMethod=GetMovieReviewAndTweetCountInfo&Ajax_CrossDomain=1&Ajax_RequestUrl=http%3A%2F%2Fmovie.mtime.com%2F207927%2Freviews%2Fshort%2Fhot.html&t=20176112147482427&Ajax_CallBackArgument0=&Ajax_CallBackArgument1="+id;
+			String response=loadJson(url2);
+			char[] cr=response.toCharArray();
+			int i=0;
+			for(i=0;i<cr.length;i++){
+				if(cr[i]=='{'){
+					break;
+				}
+			}
+			StringBuilder result= new StringBuilder();
+			for(int j=i;j<cr.length-68;j++){
+				result.append(cr[j]);
+			}
+			String json=result.toString();
+			JSONObject jo=JSONObject.fromObject(json).getJSONObject("value");
+			JSONArray ja=jo.getJSONArray("tweetPraiseCount");
+			int approve=ja.getInt(0);
+			ja=jo.getJSONArray("tweetCommentCount");
+			int reply=ja.getInt(0);
+			
+			
+//			System.out.println(reply);
+			//此处缺少一个bean生成和数据库调用
+//			System.out.println(json);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+		
+		
+		
+	}
+	public static void mtimeStart(String MovieName,String MaoYanId){
+		MTime m=new MTime();
+		m.mainMoivePrase(m.urlBuilder(MovieName), MaoYanId);
+	}
+	
+	
+	public static void main(String[] args){
+//		mtime m=new mtime();
+////		m.commentPrase("http://movie.mtime.com/207927/reviews/short/hot.html");
+//		m.mainMoivePrase(m.urlBuilder("新木乃伊"), "1");
+//		
 	}
 }
