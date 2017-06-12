@@ -1,5 +1,6 @@
 package service;
 
+import bean.MTime.Comment_MTime;
 import bean.MTime.Movie_MTime;
 
 import java.util.List;
@@ -15,6 +16,11 @@ public interface MovieService_MTime {
     public List getAllMovie();
     public Movie_MTime getMovieByMTimeId(String id);
     public Movie_MTime getMovieByMaoyanId(String id);
+
+    public boolean addComment(Comment_MTime comment);
+    public boolean deleteComment(String id);
+    public Comment_MTime getCommentByMTimeId(String id);
+
 
 
 }

@@ -1,5 +1,6 @@
 package mapper;
 
+import bean.MTime.Comment_MTime;
 import bean.MTime.Movie_MTime;
 import bean.Maoyan.Comment_Maoyan;
 import bean.Movie;
@@ -68,6 +69,18 @@ public interface MovieMapper {
     Movie_MTime getMovieById_MTime(@Param("id")String id);
     @Select("select * from movie_mtime where maoyanid = #{id}")
     Movie_MTime getMovieByMaoyanId_MTime(@Param("id")String id);
+    @Insert("insert into comment_mtime(nickname,avatarurl,time,content,approve,reply,id,mtimeid) values" +
+            "(#{nn},#{ava},#{ti},#{co},#{app},#{re},#{id},#{mid})")
+    int addComment_MTime(@Param("nn")String nickName,@Param("ava")String avatarurl,@Param("ti")Date time,
+                         @Param("co")String content,@Param("app")int approve,@Param("re")int reply,
+                         @Param("id")String id,@Param("mid")String mtimeId);
+    @Select("select * from comment_mtime where mtimeid = #{id}")
+    Comment_MTime getCommentByMTimeId_MTime(@Param("id")String id);
+    @Delete("delete from comment_mtime where id = #{id}")
+    int deleteComment_MTime(@Param("id") String id);
+
+
+
 
     @Select("select * from movie_douban where id = #{id}")
     Movie_Douban getMovieById_Douban(@Param("id") String id);

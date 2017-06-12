@@ -1,5 +1,6 @@
 package service.impl;
 
+import bean.MTime.Comment_MTime;
 import bean.MTime.Movie_MTime;
 import mapper.MovieMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,5 +92,33 @@ public class MovieService_MTimeImpl implements MovieService_MTime{
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public boolean addComment(Comment_MTime comment) {
+        try{
+            movieMapper.addComment_MTime(comment.getNickName(),comment.getAvtarurl(),comment.getTime(),
+                    comment.getContent(),comment.getApprove(),comment.getReply(),comment.getId(),comment.getmTimeId());
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteComment(String id) {
+            try{
+                movieMapper.deleteComment_MTime(id);
+                return true;
+            }catch (Exception e){
+                e.printStackTrace();
+                return false;
+            }
+    }
+
+    @Override
+    public Comment_MTime getCommentByMTimeId(String id) {
+        return movieMapper.getCommentByMTimeId_MTime(id);
     }
 }
