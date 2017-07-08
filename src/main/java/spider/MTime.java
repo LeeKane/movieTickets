@@ -14,6 +14,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import bean.MTime.Comment_MTime;
 import bean.MTime.Movie_MTime;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -218,8 +219,6 @@ public class MTime {
 			int approve=ja.getInt(0);
 			ja=jo.getJSONArray("tweetCommentCount");
 			int reply=ja.getInt(0);
-			
-			
 //			System.out.println(reply);
 			//此处缺少一个bean生成和数据库调用
 //			System.out.println(json);
