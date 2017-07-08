@@ -10,65 +10,69 @@ import java.net.URLConnection;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import bean.Maoyan.Comment_Maoyan;
 import bean.Maoyan.Movie_Maoyan;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import service.MovieService_Maoyan;
 import service.impl.MovieService_MaoyanImpl;
 
 public class maoyan {
 	public final int limit=10;//每次获取数量
-	public final int loop=100;//循环次数
+	public final int loop=1;//循环次数
 	public final int climit=5;
-	public final int cloop=10;//评论获取循环次数
-	MovieService_Maoyan ms=new MovieService_MaoyanImpl();
-	public static String loadJson(String urlPath){
-		//		try {
-//			Thread.sleep(1000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		防止封ip
-		StringBuffer sb = new StringBuffer();
-		try {
-			URL url = new URL(urlPath);
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
-			connection.connect();
-			System.out.println("=============================");
-			connection.setConnectTimeout(30000);
-			connection.setReadTimeout(30000);
-
-			//读取urlPath的内容
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
-			String str = null;
-
-			while ((str = bufferedReader.readLine()) != null) {
-				sb.append(str);
-			}
-			bufferedReader.close();
-			connection.disconnect();
-		}catch(Exception e){
+	public final int cloop=1;//评论获取循环次数
+	MovieService_Maoyan ms;
+	public maoyan(MovieService_Maoyan ms){
+	    this.ms=ms;
+    }
+    public static String loadJson(String urlPath){
+        		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return sb.toString();
-	}
+//		防止封ip
+        StringBuffer sb = new StringBuffer();
+        try {
+            URL url = new URL(urlPath);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+            connection.connect();
+            System.out.println("=============================");
+            connection.setConnectTimeout(30000);
+            connection.setReadTimeout(30000);
 
-	public static void main(String[] args) {
-		String url="http://m.maoyan.com/movie/list.json?type=hot&offset=0&limit=10";
-		System.out.println(loadJson(url));
-	}
+            //读取urlPath的内容
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
+            String str = null;
 
+            while ((str = bufferedReader.readLine()) != null) {
+                sb.append(str);
+            }
+            bufferedReader.close();
+            connection.disconnect();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return sb.toString();
+    }
+
+	
 	//猫眼搜索总入口
 	public void mainMoivePrase(){
 //		String url="http://m.maoyan.com/movie/list.json?type=hot&offset=0&limit=10";
 		for(int i=1;i<=loop;i++){
 			String url=mainMovieAdddressBuilder(i);
 			String movieList=loadJson(url);
-			JSONObject jo=JSONObject.fromObject(movieList);
+            System.out.println(movieList);
+
+            JSONObject jo=JSONObject.fromObject(movieList);
 			JSONArray array=jo.getJSONObject("data").getJSONArray("movies");
 			for(int j=0;j<array.size();j++){	
 				JSONObject movie=array.getJSONObject(j);
@@ -227,11 +231,12 @@ public class maoyan {
 				mmy.setShowing(isShowing);
 				ms.addMovie(mmy);
 				
-				JSONArray dataArray=djo.getJSONObject("CommentResponseModel").getJSONArray("cmts");
-				for(int k=0;k<dataArray.size();j++){
+				JSONArray dataArray=djo.getJSONObject("data").getJSONObject("CommentResponseModel").getJSONArray("cmts");
+				for(int k=0;k<dataArray.size();k++){
+
 					commentParse(dataArray.getJSONObject(k),id);
 				}//详情页自带的15个评论
-				for(int k=1;k<=loop;k++){
+				for(int k=1;k<=cloop;k++){
 					url=moreCommentsAddressBulider(id,k);
 					String commentList=loadJson(url);
 					JSONObject cjo=JSONObject.fromObject(commentList);
@@ -361,10 +366,15 @@ public class maoyan {
 	}
 	
 	
-//	public static void main(String[] args) {
+	public static void main(String[] args) {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("WEB-INF/applicationContext.xml");
+        MovieService_Maoyan service_maoyan = (MovieService_Maoyan)ctx.getBean("MovieService_Maoyan");
+        //new maoyan(service_maoyan).mainMoivePrase();
+        List<Movie_Maoyan> list = service_maoyan.getAllMovie();
+        System.out.println(list.get(0).getShowInfo());
 //		String str="{\"UserName\":\"ZHULI\",\"age\":\"30\",\"workIn\":\"ALI\",\"Array\":[\"ZHULI\",\"30\",\"ALI\"]}";
 //		System.out.println(str);
 //		JSONObject jo=JSONObject.fromObject(str);
 //		JSONArray ja=jo.getJSONArray("Array");
-//	}
+	}
 }
