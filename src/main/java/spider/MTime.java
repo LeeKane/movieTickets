@@ -3,6 +3,7 @@ package spider;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -18,11 +19,15 @@ import bean.MTime.Comment_MTime;
 import bean.MTime.Movie_MTime;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import service.MovieService;
 import service.MovieService_MTime;
 import service.impl.MovieService_MTimeImpl;
 
 public class MTime {
-	MovieService_MTime msm=new MovieService_MTimeImpl();
+	MovieService_MTime msm;
+	public MTime(MovieService_MTime msm){
+		this.msm=msm;
+	}
 	public String  urlBuilder(String movieName){
 		String url="http://service.channel.mtime.com/Search.api?Ajax_CallBack=true&Ajax_CallBackType=Mtime.Channel.Services&Ajax_CallBackMethod=GetSearchResult&Ajax_CrossDomain=1&Ajax_RequestUrl=http//search.mtime.com/search/?q="+movieName+"&t=20176103203852154&Ajax_CallBackArgument0="+movieName+"&Ajax_CallBackArgument1=0&Ajax_CallBackArgument2=628&Ajax_CallBackArgument3=0&Ajax_CallBackArgument4=1";
 //		System.out.println(url);
@@ -51,30 +56,38 @@ public class MTime {
 		System.out.println("No movie named "+movieName);
 		return "error";
 	}
-	
-	public String loadJson(String url) {
-//		try {
-//			Thread.sleep(1000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		防止封ip
-		StringBuilder json = new StringBuilder();
+
+	public static String loadJson(String urlPath){
 		try {
-			URL oracle = new URL(url);
-			URLConnection yc = oracle.openConnection();
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					yc.getInputStream(),"UTF-8"));
-			String inputLine = null;
-			while ((inputLine = in.readLine()) != null) {
-				json.append(inputLine);
-			}
-			in.close();
-		} catch (MalformedURLException e) {
-		} catch (IOException e) {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return json.toString();
+//		防止封ip
+		StringBuffer sb = new StringBuffer();
+		try {
+			URL url = new URL(urlPath);
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+			connection.connect();
+			System.out.println("=============================");
+			connection.setConnectTimeout(30000);
+			connection.setReadTimeout(30000);
+
+			//读取urlPath的内容
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
+			String str = null;
+
+			while ((str = bufferedReader.readLine()) != null) {
+				sb.append(str);
+			}
+			bufferedReader.close();
+			connection.disconnect();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return sb.toString();
 	}
 	
 	public void mainMoivePrase(String id,String MaoyanId){
@@ -126,51 +139,61 @@ public class MTime {
 		else{
 			movieTitle="error";
 		}
-		JSONObject boxOffice=jo.getJSONObject("value").getJSONObject("boxOffice");
 		double TotalBoxOffice=0.0;
-		if(boxOffice.has("TotalBoxOffice")){
-			TotalBoxOffice=boxOffice.getDouble("TotalBoxOffice");
-		}
-		else{
-			TotalBoxOffice=-1.0;
-		}
 		double TodayBoxOffice=0.0;
-		if(boxOffice.has("TodayBoxOffice")){
-			TodayBoxOffice=boxOffice.getDouble("TodayBoxOffice");
-		}
-		else{
-			TodayBoxOffice=-1.0;
-		}
 		String TotalBoxOfficeUnit="";
-		if(boxOffice.has("TotalBoxOfficeUnit")){
-			TotalBoxOfficeUnit=boxOffice.getString("TotalBoxOfficeUnit");
-		}
-		else{
-			TotalBoxOfficeUnit="error";
-		}
 		String TodayBoxOfficeUnit="";
-		if(boxOffice.has("TodayBoxOfficeUnit")){
-			TodayBoxOfficeUnit=boxOffice.getString("TodayBoxOfficeUnit");
-		}
-		else{
-			TodayBoxOfficeUnit="error";
-		}
+		Date EndDate=null;
 		int ShowDays=0;
-		if(boxOffice.has("ShowDays")){
-			ShowDays=boxOffice.getInt("ShowDays");
+		if(jo.getJSONObject("value").has("boxOffice")){
+			JSONObject boxOffice=jo.getJSONObject("value").getJSONObject("boxOffice");
+//		System.out.println(boxOffice.toString());
+
+			if(boxOffice.has("TotalBoxOffice")){
+				TotalBoxOffice=boxOffice.getDouble("TotalBoxOffice");
+			}
+			else{
+				TotalBoxOffice=-1.0;
+			}
+
+			if(boxOffice.has("TodayBoxOffice")){
+				TodayBoxOffice=boxOffice.getDouble("TodayBoxOffice");
+			}
+			else{
+				TodayBoxOffice=-1.0;
+			}
+
+			if(boxOffice.has("TotalBoxOfficeUnit")){
+				TotalBoxOfficeUnit=boxOffice.getString("TotalBoxOfficeUnit");
+			}
+			else{
+				TotalBoxOfficeUnit="error";
+			}
+
+			if(boxOffice.has("TodayBoxOfficeUnit")){
+				TodayBoxOfficeUnit=boxOffice.getString("TodayBoxOfficeUnit");
+			}
+			else{
+				TodayBoxOfficeUnit="error";
+			}
+
+			if(boxOffice.has("ShowDays")){
+				ShowDays=boxOffice.getInt("ShowDays");
+			}
+			else{
+				ShowDays=-1;
+			}
+
+			if(boxOffice.has("EndDate")){
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				ParsePosition pos = new ParsePosition(0);
+				EndDate=formatter.parse(boxOffice.getString("EndDate"),pos);
+			}
+			else{
+				EndDate=null;
+			}
 		}
-		else{
-			ShowDays=-1;
-		}
-		Date EndDate;
-		if(boxOffice.has("EndDate")){
-			 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			 ParsePosition pos = new ParsePosition(0);
-			 EndDate=formatter.parse(boxOffice.getString("EndDate"),pos);
-		}
-		else{
-			EndDate=null;
-		}
+
 		Movie_MTime m=new Movie_MTime();
 		m.setMovieTitle(movieTitle);
 		m.setRatingFinal(RatingFinal);
@@ -186,11 +209,11 @@ public class MTime {
 		m.setMaoyanId(MaoyanId);
 		msm.addMovie(m);
 		String url="http://movie.mtime.com/"+id+"/reviews/short/hot.html";
-		commentPrase(url);
+		commentPrase(url,id);
     }
 	
 	
-	public void commentPrase(String url){
+	public void commentPrase(String url,String mtimeid){
 		try {
 			Document doc = Jsoup.connect(url).get();
 			Element e=doc.select("#tweetRegion > dd.first > div > div.comboxuser > div.pic_58 > a > img").first();
@@ -200,8 +223,13 @@ public class MTime {
 			String content=e.text();
 			e=doc.select("#tweetRegion > dd.first > div").first();
 			String id=e.attr("tweetid");
+			Date date=null;
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			ParsePosition pos = new ParsePosition(0);
+			date=formatter.parse(doc.select("#tweetRegion > dd.first > div > div.comboxuser > div.mt10 > a").first().attr("entertime"),pos);
 			String url2="http://service.library.mtime.com/Movie.api?Ajax_CallBack=true&Ajax_CallBackType=Mtime.Library.Services&Ajax_CallBackMethod=GetMovieReviewAndTweetCountInfo&Ajax_CrossDomain=1&Ajax_RequestUrl=http%3A%2F%2Fmovie.mtime.com%2F207927%2Freviews%2Fshort%2Fhot.html&t=20176112147482427&Ajax_CallBackArgument0=&Ajax_CallBackArgument1="+id;
 			String response=loadJson(url2);
+
 			char[] cr=response.toCharArray();
 			int i=0;
 			for(i=0;i<cr.length;i++){
@@ -219,6 +247,16 @@ public class MTime {
 			int approve=ja.getInt(0);
 			ja=jo.getJSONArray("tweetCommentCount");
 			int reply=ja.getInt(0);
+			Comment_MTime cm = new Comment_MTime();
+			cm.setApprove(approve);
+			cm.setAvtarurl(avatarurl);
+			cm.setContent(content);
+			cm.setId(id);
+			cm.setmTimeId(mtimeid);
+			cm.setNickName(nickName);
+			cm.setReply(reply);
+			cm.setTime(date);
+			msm.addComment(cm);
 //			System.out.println(reply);
 			//此处缺少一个bean生成和数据库调用
 //			System.out.println(json);
@@ -231,9 +269,8 @@ public class MTime {
 		
 		
 	}
-	public static void mtimeStart(String MovieName,String MaoYanId){
-		MTime m=new MTime();
-		m.mainMoivePrase(m.urlBuilder(MovieName), MaoYanId);
+	public void mtimeStart(String MovieName,String MaoYanId){
+		mainMoivePrase(urlBuilder(MovieName), MaoYanId);
 	}
 	
 	

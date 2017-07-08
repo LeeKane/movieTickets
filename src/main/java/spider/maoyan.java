@@ -18,6 +18,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import service.MovieService_MTime;
 import service.MovieService_Maoyan;
 import service.impl.MovieService_MaoyanImpl;
 
@@ -369,9 +370,15 @@ public class maoyan {
 	public static void main(String[] args) {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("WEB-INF/applicationContext.xml");
         MovieService_Maoyan service_maoyan = (MovieService_Maoyan)ctx.getBean("MovieService_Maoyan");
+		MovieService_MTime service_mtime = (MovieService_MTime)ctx.getBean("MovieService_MTime");
         //new maoyan(service_maoyan).mainMoivePrase();
         List<Movie_Maoyan> list = service_maoyan.getAllMovie();
-        System.out.println(list.get(0).getShowInfo());
+        MTime mtime = new MTime(service_mtime);
+        for(Movie_Maoyan mv:list){
+        	String moviename = mv.getNm();
+        	String maoyanid = mv.getId();
+			mtime.mtimeStart(moviename,maoyanid);
+		}
 //		String str="{\"UserName\":\"ZHULI\",\"age\":\"30\",\"workIn\":\"ALI\",\"Array\":[\"ZHULI\",\"30\",\"ALI\"]}";
 //		System.out.println(str);
 //		JSONObject jo=JSONObject.fromObject(str);
