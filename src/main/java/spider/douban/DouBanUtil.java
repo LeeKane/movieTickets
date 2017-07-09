@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -22,22 +23,37 @@ public class DouBanUtil {
         super();
     }
 
-    private static String loadJson(String url) {
-        StringBuilder json = new StringBuilder();
+    public static String loadJson(String urlPath){
         try {
-            URL oracle = new URL(url);
-            URLConnection yc = oracle.openConnection();
-            BufferedReader in = new BufferedReader(new InputStreamReader(
-                    yc.getInputStream(),"UTF-8"));
-            String inputLine = null;
-            while ((inputLine = in.readLine()) != null) {
-                json.append(inputLine);
-            }
-            in.close();
-        } catch (MalformedURLException e) {
-        } catch (IOException e) {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-        return json.toString();
+//		防止封ip
+        StringBuffer sb = new StringBuffer();
+        try {
+            URL url = new URL(urlPath);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+            connection.connect();
+            System.out.println("=============================");
+            connection.setConnectTimeout(30000);
+            connection.setReadTimeout(30000);
+
+            //读取urlPath的内容
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
+            String str = null;
+
+            while ((str = bufferedReader.readLine()) != null) {
+                sb.append(str);
+            }
+            bufferedReader.close();
+            connection.disconnect();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return sb.toString();
     }
 
     private List<Movie> JSONArray_movieId(JSONObject object) throws JSONException {

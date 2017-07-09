@@ -1,9 +1,7 @@
 package service.impl;
 
 import mapper.MovieMapper;
-import model.Douban.Cast_Douban;
-import model.Douban.Movie_Douban;
-import model.Douban.Rating_Douban;
+import model.Douban.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import service.MovieService_Douban;
 import spider.douban.Cast;
@@ -139,6 +137,65 @@ public class MovieService_DoubanImpl implements MovieService_Douban{
             return true;
         }catch (Exception e){
             e.printStackTrace();;
+            return false;
+        }
+    }
+
+    @Override
+    public List<Comment_Douban> getCommentByMovieId(String movieId) {
+        return movieMapper.getCommentByMovieId_Douban(movieId);
+    }
+
+    @Override
+    public Comment_Douban getCommentBtId(String id) {
+        return movieMapper.getCommentById_Douban(id);
+    }
+
+    @Override
+    public boolean addComment(Comment_Douban comment) {
+        try{
+            movieMapper.addComment_Douban(comment.getId(),comment.getMovieId(),comment.getDate(),comment.getAuthorId(),comment.getContent(),comment.getUseful(),comment.getValue(),comment.getSubject_id());
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteComment(String id) {
+        try{
+            movieMapper.deleteAuthor_Douban(id);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public Author_Douban getAuthor(String id) {
+        return movieMapper.getAuthorById_Douban(id);
+    }
+
+    @Override
+    public boolean addAuthor(Author_Douban author) {
+        try{
+            movieMapper.addAuthor_Douban(author.getId(),author.getUid(),author.getName(),author.getSignature(),author.getAlt(),author.getAvatar());
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteAuthor(String id) {
+        try{
+            movieMapper.deleteAuthor_Douban(id);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
             return false;
         }
     }

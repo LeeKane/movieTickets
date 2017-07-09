@@ -5,9 +5,7 @@ import bean.MTime.Movie_MTime;
 import bean.Maoyan.Comment_Maoyan;
 import bean.Movie;
 import bean.Maoyan.Movie_Maoyan;
-import model.Douban.Cast_Douban;
-import model.Douban.Movie_Douban;
-import model.Douban.Rating_Douban;
+import model.Douban.*;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.annotations.Select;
 
@@ -112,4 +110,22 @@ public interface MovieMapper {
     int addCast_Douban(@Param("alt")String alt,@Param("al")String al,@Param("am")String am,@Param("as")String as,@Param("name")String name,@Param("id")String id);
     @Delete("delete from cast_douban where id = #{id}")
     int deleteCast_Douban(@Param("id") String id);
+
+    @Select("select * from comment_douban where movieid = #{id}")
+    List<Comment_Douban> getCommentByMovieId_Douban(@Param("id")String id);
+    @Select("select * from comment_douban where id = #{id}")
+    Comment_Douban getCommentById_Douban(@Param("id")String id);
+    @Delete("delete from comment_douban where id = #{id}")
+    int deleteComment_Douban(@Param("id")String id);
+    @Insert("insert into comment_douban(id,movieid,date,authorid,content,useful,value,subject_id) values" +
+            " (#{id},#{movieid},#{date},#{authorid},#{content},#{useful},#{value},#{subject_id}")
+    int addComment_Douban(@Param("id")String id,@Param("movieid")String movieId,@Param("date")String date,@Param("authorid")String authorid,@Param("content")String content,
+                          @Param("useful")int useful,@Param("value")int value,@Param("subject_id")String subject_id);
+
+    @Select("select * from author_douban where id = #{id}")
+    Author_Douban getAuthorById_Douban(@Param("id")String id);
+    @Delete("delete from author_douban where id = #{id}")
+    int deleteAuthor_Douban(@Param("id")String id);
+    @Insert("insert into author_douban(id,uid,name,signature,alt,avatar)")
+    int addAuthor_Douban(@Param("id")String id,@Param("uid")String uid,@Param("name")String name,@Param("signature")String signature,@Param("alt")String alt,@Param("avatar")String avatar);
 }
