@@ -19,7 +19,7 @@ public interface MovieService_MTime {
 
     public boolean addComment(Comment_MTime comment);
     public boolean deleteComment(String id);
-    public Comment_MTime getCommentByMTimeId(String id);
+    public List<Comment_MTime> getCommentByMTimeId(String id);
 
 
 

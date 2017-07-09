@@ -12,21 +12,25 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import bean.Comment_Integrated;
 import bean.Maoyan.Comment_Maoyan;
 import bean.Maoyan.Movie_Maoyan;
+import bean.Movie_Integrated;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import service.MovieService;
 import service.MovieService_MTime;
 import service.MovieService_Maoyan;
 import service.impl.MovieService_MaoyanImpl;
+import spider.douban.Comment;
 
 public class maoyan {
 	public final int limit=10;//每次获取数量
 	public final int loop=1;//循环次数
 	public final int climit=5;
-	public final int cloop=1;//评论获取循环次数
+	public final int cloop=15;//评论获取循环次数
 	MovieService_Maoyan ms;
 	public maoyan(MovieService_Maoyan ms){
 	    this.ms=ms;
@@ -371,14 +375,28 @@ public class maoyan {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("WEB-INF/applicationContext.xml");
         MovieService_Maoyan service_maoyan = (MovieService_Maoyan)ctx.getBean("MovieService_Maoyan");
 		MovieService_MTime service_mtime = (MovieService_MTime)ctx.getBean("MovieService_MTime");
-        //new maoyan(service_maoyan).mainMoivePrase();
-        List<Movie_Maoyan> list = service_maoyan.getAllMovie();
-        MTime mtime = new MTime(service_mtime);
-        for(Movie_Maoyan mv:list){
-        	String moviename = mv.getNm();
-        	String maoyanid = mv.getId();
-			mtime.mtimeStart(moviename,maoyanid);
+		MovieService ms = (MovieService)ctx.getBean("MovieService");
+		List<Movie_Integrated> list = ms.getAllMoviesIntegrated();
+		for(Movie_Integrated mv:list){
+			System.out.println(mv.getName()+" "+mv.getScoremaoyan()+" "+mv.getScoremtime());
+			for(Comment_Integrated cm:mv.getComments()){
+				System.out.println(cm.getUsername()+" "+cm.getContent()+" "+cm.getSource());
+			}
+			System.out.println("-----------------------------------");
 		}
+       // new maoyan(service_maoyan).mainMoivePrase();
+//        List<Movie_Maoyan> list = service_maoyan.getAllMovie();
+//        //MTime mtime = new MTime(service_mtime);
+//        for(Movie_Maoyan mv:list){
+//        	String moviename = mv.getNm();
+//        	String maoyanid = mv.getId();
+//			//mtime.mtimeStart(moviename,maoyanid);
+//			List<Comment_Maoyan> cmlist = service_maoyan.getCommentByMovieId(mv.getId());
+//			for(Comment_Maoyan cm:cmlist){
+//				System.out.println(cm.getContent());
+//			}
+//			System.out.println("--------------------------------------------------");
+//		}
 //		String str="{\"UserName\":\"ZHULI\",\"age\":\"30\",\"workIn\":\"ALI\",\"Array\":[\"ZHULI\",\"30\",\"ALI\"]}";
 //		System.out.println(str);
 //		JSONObject jo=JSONObject.fromObject(str);

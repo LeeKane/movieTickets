@@ -118,7 +118,7 @@ public class MovieService_MTimeImpl implements MovieService_MTime{
     }
 
     @Override
-    public Comment_MTime getCommentByMTimeId(String id) {
+    public List<Comment_MTime> getCommentByMTimeId(String id) {
         return movieMapper.getCommentByMTimeId_MTime(id);
     }
 }

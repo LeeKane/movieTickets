@@ -73,7 +73,7 @@ public interface MovieMapper {
                          @Param("co")String content,@Param("app")int approve,@Param("re")int reply,
                          @Param("id")String id,@Param("mid")String mtimeId);
     @Select("select * from comment_mtime where mtimeid = #{id}")
-    Comment_MTime getCommentByMTimeId_MTime(@Param("id")String id);
+    List<Comment_MTime> getCommentByMTimeId_MTime(@Param("id")String id);
     @Delete("delete from comment_mtime where id = #{id}")
     int deleteComment_MTime(@Param("id") String id);
 
