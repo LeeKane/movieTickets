@@ -118,7 +118,7 @@ public interface MovieMapper {
     @Delete("delete from comment_douban where id = #{id}")
     int deleteComment_Douban(@Param("id")String id);
     @Insert("insert into comment_douban(id,movieid,date,authorid,content,useful,value,subject_id) values" +
-            " (#{id},#{movieid},#{date},#{authorid},#{content},#{useful},#{value},#{subject_id}")
+            " (#{id},#{movieid},#{date},#{authorid},#{content},#{useful},#{value},#{subject_id})")
     int addComment_Douban(@Param("id")String id,@Param("movieid")String movieId,@Param("date")String date,@Param("authorid")String authorid,@Param("content")String content,
                           @Param("useful")int useful,@Param("value")int value,@Param("subject_id")String subject_id);
 
@@ -126,6 +126,6 @@ public interface MovieMapper {
     Author_Douban getAuthorById_Douban(@Param("id")String id);
     @Delete("delete from author_douban where id = #{id}")
     int deleteAuthor_Douban(@Param("id")String id);
-    @Insert("insert into author_douban(id,uid,name,signature,alt,avatar)")
+    @Insert("insert into author_douban(id,uid,name,signature,alt,avatar) values (#{id},#{uid},#{name},#{signature},#{alt},#{avatar})")
     int addAuthor_Douban(@Param("id")String id,@Param("uid")String uid,@Param("name")String name,@Param("signature")String signature,@Param("alt")String alt,@Param("avatar")String avatar);
 }

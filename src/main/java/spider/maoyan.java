@@ -21,23 +21,25 @@ import net.sf.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import service.MovieService;
+import service.MovieService_Douban;
 import service.MovieService_MTime;
 import service.MovieService_Maoyan;
 import service.impl.MovieService_MaoyanImpl;
 import spider.douban.Comment;
+import spider.douban.DouBan;
 
 public class maoyan {
 	public final int limit=10;//每次获取数量
-	public final int loop=1;//循环次数
+	public final int loop=3;//循环次数
 	public final int climit=5;
-	public final int cloop=15;//评论获取循环次数
+	public final int cloop=180;//评论获取循环次数
 	MovieService_Maoyan ms;
 	public maoyan(MovieService_Maoyan ms){
 	    this.ms=ms;
     }
     public static String loadJson(String urlPath){
         		try {
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,7 +49,7 @@ public class maoyan {
         try {
             URL url = new URL(urlPath);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+            connection.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)");
             connection.connect();
             System.out.println("=============================");
             connection.setConnectTimeout(30000);
@@ -197,17 +199,17 @@ public class maoyan {
 				url=commentsAddressBulider(id);
 				String detailList=loadJson(url);
 				JSONObject djo=JSONObject.fromObject(detailList);
-				JSONObject datajo=djo.getJSONObject("data");
+				JSONObject datajo=djo.getJSONObject("data").getJSONObject("MovieDetailModel");
 				String dra;
 				if(datajo.has("dra")){
-					dra=movie.getString("dra");
+					dra=datajo.getString("dra");
 				}
 				else{
 					dra="error";
 				}
 				boolean isShowing;
-				if(datajo.has("imax")){
-					isShowing=movie.getBoolean("imax");
+				if(datajo.has("isShowing")){
+					isShowing=datajo.getBoolean("isShowing");
 				}
 				else{
 					isShowing=false;
@@ -375,28 +377,29 @@ public class maoyan {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("WEB-INF/applicationContext.xml");
         MovieService_Maoyan service_maoyan = (MovieService_Maoyan)ctx.getBean("MovieService_Maoyan");
 		MovieService_MTime service_mtime = (MovieService_MTime)ctx.getBean("MovieService_MTime");
+		MovieService_Douban service_douban = (MovieService_Douban)ctx.getBean("MovieService_Douban");
+
+//		new maoyan(service_maoyan).mainMoivePrase();
+//        List<Movie_Maoyan> list = service_maoyan.getAllMovie();
+//        MTime mtime = new MTime(service_mtime);
+//		DouBan douban = new DouBan(service_douban);
+//        for(Movie_Maoyan mv:list){
+//        	String moviename = mv.getNm();
+//        	String maoyanid = mv.getId();
+////			mtime.mtimeStart(moviename,maoyanid);
+////			douban.searchMovie(moviename);
+//
+//		}
 		MovieService ms = (MovieService)ctx.getBean("MovieService");
-		List<Movie_Integrated> list = ms.getAllMoviesIntegrated();
-		for(Movie_Integrated mv:list){
-			System.out.println(mv.getName()+" "+mv.getScoremaoyan()+" "+mv.getScoremtime());
+		List<Movie_Integrated> mvlist = ms.getMoviesByName("神偷");
+		for(Movie_Integrated mv:mvlist){
+			System.out.println(mv.getName());
 			for(Comment_Integrated cm:mv.getComments()){
 				System.out.println(cm.getUsername()+" "+cm.getContent()+" "+cm.getSource());
 			}
 			System.out.println("-----------------------------------");
+			if(mv.getName().contains("神偷"))break;
 		}
-       // new maoyan(service_maoyan).mainMoivePrase();
-//        List<Movie_Maoyan> list = service_maoyan.getAllMovie();
-//        //MTime mtime = new MTime(service_mtime);
-//        for(Movie_Maoyan mv:list){
-//        	String moviename = mv.getNm();
-//        	String maoyanid = mv.getId();
-//			//mtime.mtimeStart(moviename,maoyanid);
-//			List<Comment_Maoyan> cmlist = service_maoyan.getCommentByMovieId(mv.getId());
-//			for(Comment_Maoyan cm:cmlist){
-//				System.out.println(cm.getContent());
-//			}
-//			System.out.println("--------------------------------------------------");
-//		}
 //		String str="{\"UserName\":\"ZHULI\",\"age\":\"30\",\"workIn\":\"ALI\",\"Array\":[\"ZHULI\",\"30\",\"ALI\"]}";
 //		System.out.println(str);
 //		JSONObject jo=JSONObject.fromObject(str);
