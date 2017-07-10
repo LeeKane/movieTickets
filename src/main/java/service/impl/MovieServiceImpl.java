@@ -58,11 +58,12 @@ public class MovieServiceImpl implements MovieService {
 
             Movie_Integrated newmv = new Movie_Integrated();
             List<Comment_Integrated> newcms = new ArrayList<Comment_Integrated>();
-
+            newmv.setId(mv_maoyan.getId());
             newmv.setName(mv_maoyan.getNm());
             newmv.setShowinfo(mv_maoyan.getShowInfo());
             newmv.setScoremaoyan(mv_maoyan.getSc());
             newmv.setVer(mv_maoyan.getVer());
+            newmv.setScm(mv_maoyan.getScm());
             newmv.setShowdate(mv_maoyan.getRt());
             newmv.setDescription(mv_maoyan.getDra());
             newmv.setDir(mv_maoyan.getDir());
@@ -95,7 +96,6 @@ public class MovieServiceImpl implements MovieService {
                     newcm.setUsername(oldcm.getNickName());
                     newcm.setTime(oldcm.getTime());
                     newcm.setContent(oldcm.getContent());
-                    newcm.setApprove(oldcm.getApprove());
                     newcm.setAvatarurl(oldcm.getAvtarurl());
                     newcms.add(newcm);
                 }
@@ -116,7 +116,6 @@ public class MovieServiceImpl implements MovieService {
                     Comment_Integrated newcm = new Comment_Integrated();
                     newcm.setSource("douban");
                     newcm.setAvatarurl(movieMapper.getAuthorById_Douban(cm.getAuthorId()).getAvatar());
-                    newcm.setApprove(cm.getUseful());
                     newcm.setContent(cm.getContent());
                     SimpleDateFormat sdf;
                     sdf = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
@@ -143,11 +142,12 @@ public class MovieServiceImpl implements MovieService {
 
             Movie_Integrated newmv = new Movie_Integrated();
             List<Comment_Integrated> newcms = new ArrayList<Comment_Integrated>();
-
+            newmv.setId(mv_maoyan.getId());
             newmv.setName(mv_maoyan.getNm());
             newmv.setShowinfo(mv_maoyan.getShowInfo());
             newmv.setScoremaoyan(mv_maoyan.getSc());
             newmv.setVer(mv_maoyan.getVer());
+            newmv.setScm(mv_maoyan.getScm());
             newmv.setShowdate(mv_maoyan.getRt());
             newmv.setDescription(mv_maoyan.getDra());
             newmv.setDir(mv_maoyan.getDir());

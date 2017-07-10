@@ -43,13 +43,13 @@ let MovieItem=React.createClass({
                     <img className="movieImg" src={movie.img}/>
                 </div>
                 <div className="movieInfo">
-                    <p className="movieName">{movie.nm} <span className="movieVer">{movie.ver}</span></p>
+                    <p className="movieName">{movie.name} <span className="movieVer">{movie.ver}</span></p>
                     <p className="movieComment">{movie.scm}</p>
-                    <p className="movieActors">{movie.star} <span className="movieRt">{movie.rt}</span></p>
+                    <p className="movieActors">{movie.star} <span className="movieRt">{movie.showdate}</span></p>
                 </div>
                 <div className="movieButtonContainer">
-                    <div className="movieScore"><span className="scText">{movie.sc}</span> 分</div>
-                    <div className="movieButton"><a className="waves-effect waves-light btn" href={`./movieInfo?id=${movie.id}`}>详情</a></div>
+                    <div className="movieScore"><span className="scText">{movie.scoremaoyan}</span> 分</div>
+                    <div className="movieButton"><a className="waves-effect waves-light btn" href={`./movieInfo?id=${movie.name}`}>详情</a></div>
                 </div>
             </div>
         );
@@ -75,10 +75,10 @@ let MovieTable=React.createClass({
         let {movies}=this.props;
         let {filterText}=this.state;
         movies.forEach(function(movie){
-            if(movie.nm.indexOf(filterText) === -1)
+            if(movie.name.indexOf(filterText) === -1)
             {}
             else {
-                rows.push(<MovieItem key={movie.id} movie={movie}/>);
+                rows.push(<MovieItem key={movie.name} movie={movie}/>);
             }
         });
         return(

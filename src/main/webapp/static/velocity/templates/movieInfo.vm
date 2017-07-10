@@ -10,13 +10,17 @@
             <img src=$!result.movie.img />
         </div>
         <div class="movieSummary">
-            <div class="movieName">$!result.movie.nm</div>
+            <div class="movieName">$!result.movie.name</div>
             <div class="movieScore">
-                <b>$!result.movie.sc</b>
-                <small>($!result.movie.snum 人评) 来自 <img class="srcLogo" src="./static/images/maoyan.png"/></small>
+                <b>$!result.movie.scoremaoyan</b>
+                <small>来自 <img class="srcLogo" src="./static/images/maoyan.png"/></small>
+                <b>$!result.movie.scoredouban</b>
+                <small>来自 <img class="srcLogo" src="./static/images/douban.png"/></small>
+                <b>$!result.movie.scoremtime</b>
+                <small>来自 <img class="srcLogo" src="./static/images/mtime.jpg"/></small>
             </div>
             <div class="movieTag">$!result.movie.cat</div>
-            <div class="movieDate">$!result.movie.rt | $!result.movie.dur 分钟</div>
+            <div class="movieDate">$!result.movie.showdate | $!result.movie.dur 分钟</div>
         </div>
     </div>
     <div class="movieContent">
@@ -30,37 +34,140 @@
     <section class="hot-comment">
         <div class="comment-header">
             <p>
+                电影标签
+            </p>
+        </div>
+        <div id="comment-content" >
+            <div class="row">
+                <div class="col s12 center">
+                    <img class="tabImg" src=$!result.tabImg/>
+                    </div>
+                </div>
+        </div>
+    </section>
+    <section class="hot-comment">
+        <div class="comment-header">
+            <p>
                 观影评论
             </p>
         </div>
         <div id="comment-content" >
-                #foreach($comment in $result.comments)
-                    <div class="comment-item">
-                        <div class="user-avatar">
-                            <img class="avatar-img" src=$!comment.avatarurl>
-                        </div>
-                        <div class="comment-info">
-                            <div class="comment-approve">
-                                <b class="comment-username">$!comment.nickName</b>
-                                #if($comment.score > 3.5)
-                                    <span class="comment-tag">值得一看</span>
-                                #end
-                                <span class="approve">$!comment.approve 赞</span>
+            <div class="row">
+                <div class="col s12">
+                    <ul class="tabs">
+                        <li class="tab col s4"><a href="#test1" class="active">猫眼</a></li>
+                        <li class="tab col s4"><a  href="#test2" >豆瓣</a></li>
+                        <li class="tab col s4 "><a href="#test3" >时光</a></li>
+                    </ul>
+                </div>
+                <div id="test1" class="col s12">
+                    #foreach($comment in $result.maoyanComments)
+                        <div class="comment-item">
+                            <div class="user-avatar">
+                                <img class="avatar-img" src=$!comment.avatarurl>
                             </div>
-                            <p>
-                                $!comment.content
-                            </p>
-                            <div class="comment-time">
-                                $!comment.time
-                                <span class="reply">$!comment.reply 回应</span>
+                            <div class="comment-info">
+                                <div class="comment-approve">
+                                    <b class="comment-username">$!comment.username</b>
+                                    #if($comment.approve > 0)
+                                        <span class="comment-tag">值得一看</span>
+                                    #end
+                                    <span class="approve">$!comment.approve 赞</span>
+                                </div>
+                                <p>
+                                    $!comment.content
+                                </p>
+                                <div class="comment-time">
+                                    $!comment.time
+                                    #if($comment.source == "maoyan")
+                                        <span class="reply"><small>来自 <img class="srcLogo" style="margin-right: 0;" src="./static/images/maoyan.png"/></small></span>
+                                    #end
+                                    #if($comment.source == "douban")
+                                        <span class="reply"><small>来自 <img class="srcLogo" style="margin-right: 0;" src="./static/images/douban.png"/></small></span>
+                                    #end
+                                    #if($comment.source == "mtime")
+                                        <span class="reply"><small>来自 <img class="srcLogo" style="margin-right: 0;" src="./static/images/mtime.jpg"/></small></span>
+                                    #end
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                #end
+                    #end
+                </div>
+                <div id="test2" class="col s12">
+                    #foreach($comment in $result.doubanComments)
+                        <div class="comment-item">
+                            <div class="user-avatar">
+                                <img class="avatar-img" src=$!comment.avatarurl>
+                            </div>
+                            <div class="comment-info">
+                                <div class="comment-approve">
+                                    <b class="comment-username">$!comment.username</b>
+                                    #if($comment.approve > 0)
+                                        <span class="comment-tag">值得一看</span>
+                                    #end
+                                    <span class="approve">$!comment.approve 赞</span>
+                                </div>
+                                <p>
+                                    $!comment.content
+                                </p>
+                                <div class="comment-time">
+                                    $!comment.time
+                                    #if($comment.source == "maoyan")
+                                        <span class="reply"><small>来自 <img class="srcLogo" style="margin-right: 0;" src="./static/images/maoyan.png"/></small></span>
+                                    #end
+                                    #if($comment.source == "douban")
+                                        <span class="reply"><small>来自 <img class="srcLogo" style="margin-right: 0;" src="./static/images/douban.png"/></small></span>
+                                    #end
+                                    #if($comment.source == "mtime")
+                                        <span class="reply"><small>来自 <img class="srcLogo" style="margin-right: 0;" src="./static/images/mtime.jpg"/></small></span>
+                                    #end
+                                </div>
+                            </div>
+                        </div>
+
+                    #end
+                </div>
+                <div id="test3" class="col s12">
+                    #foreach($comment in $result.mtimeComments)
+                        <div class="comment-item">
+                            <div class="user-avatar">
+                                <img class="avatar-img" src=$!comment.avatarurl>
+                            </div>
+                            <div class="comment-info">
+                                <div class="comment-approve">
+                                    <b class="comment-username">$!comment.username</b>
+                                    #if($comment.approve > 0)
+                                        <span class="comment-tag">值得一看</span>
+                                    #end
+                                    <span class="approve">$!comment.approve 赞</span>
+                                </div>
+                                <p>
+                                    $!comment.content
+                                </p>
+                                <div class="comment-time">
+                                    $!comment.time
+                                    #if($comment.source == "maoyan")
+                                        <span class="reply"><small>来自 <img class="srcLogo" style="margin-right: 0;" src="./static/images/maoyan.png"/></small></span>
+                                    #end
+                                    #if($comment.source == "douban")
+                                        <span class="reply"><small>来自 <img class="srcLogo" style="margin-right: 0;" src="./static/images/douban.png"/></small></span>
+                                    #end
+                                    #if($comment.source == "mtime")
+                                        <span class="reply"><small>来自 <img class="srcLogo" style="margin-right: 0;" src="./static/images/mtime.jpg"/></small></span>
+                                    #end
+                                </div>
+                            </div>
+                        </div>
+
+                    #end
+                </div>
+            </div>
+
         </div>
 
     </section>
 </div>
 
 <script src="./static/js/comment.js" type="text/babel"></script>
+<script src="./static/js/lib/materialize.min.js"></script>

@@ -6,11 +6,13 @@ import java.util.List;
  * Created by USERZHANG on 2017/7/9.
  */
 public class Movie_Integrated {
+    private  String id;
     private String name;
     private String showinfo;
     private double scoredouban;
     private double scoremaoyan;
     private double scoremtime;
+    private String scm;
     private String ver;
     private String showdate;
     private String description;
@@ -20,6 +22,22 @@ public class Movie_Integrated {
     private String img;
     private int dur;
     private List<Comment_Integrated> comments;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getScm() {
+        return scm;
+    }
+
+    public void setScm(String scm) {
+        this.scm = scm;
+    }
 
     public String getName() {
         return name;
